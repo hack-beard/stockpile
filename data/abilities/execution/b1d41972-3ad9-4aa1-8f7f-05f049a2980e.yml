@@ -11,14 +11,14 @@
     darwin:
       sh:
         command: |
-          nohup ./sandcat.go -server #{server} &
+          nohup ./#{sandcat.compile.name}-darwin -server #{server} &
         cleanup: |
-          pkill -f sandcat
+          pkill -f #{sandcat.compile.name}
         payload: sandcat.go
     linux:
       sh:
         command: |
-          nohup ./sandcat.go -server #{server} &
+          nohup ./#{sandcat.compile.name}-linux -server #{server} &
         cleanup: |
-          pkill -f sandcat
+          pkill -f #{sandcat.compile.name}
         payload: sandcat.go

