@@ -1,8 +1,8 @@
 ---
 
-- id: aaf34d82-aea9-4278-8ec4-789653e4f5d9
-  name: GetAdminMembers
-  description: Get Administrator users for a computer
+- id: f1cf4ea1-43f0-4604-9537-3d1b1b2d5b1c
+  name: GetServiceAccounts
+  description: Get Service Accounts for a domain
   tactic: discovery
   technique:
     attack_id: T1033
@@ -12,7 +12,7 @@
       psh:
         command: |
           Import-Module .\powerview.ps1 -Force;
-          Get-NetUser | ConvertTo-Json -Depth 1
+          Get-NetUser -SPN | ConvertTo-Json -Depth 1
         payload: powerview.ps1
         parsers:
           plugins.stockpile.app.parsers.json:
@@ -20,4 +20,3 @@
               json_key: samaccountname
               json_type:
                 - str
-
